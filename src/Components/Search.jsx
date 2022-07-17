@@ -27,15 +27,29 @@ font-weight:bold;
 `
 export const Search = () => {
 
-    const [search, setSearch] = useState("");
-    const handleChange = (value) => {
-        // console.log(event.target);
-        // const value = event.target.value;
+    const [search, setSearch] = useState([]);
+   
+    // let timer;
+    // const debounce = (func) => {
+       
+    //     return {
+    //         if(timer) {
+    //             clearTimeout(timer)
+    //         }
 
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${value}&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`)
-            .then((res) => console.log(res))
-
-    }
+    //         timer = setTimeout( function (){
+    //             func()            
+    //             },500)
+    //     }
+            
+        
+    // }
+    
+    useEffect(() => {
+        axios.get("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCpGeBXtx91HZImsvn6lBvUFdgjmtbhgC4")
+            .then(res => console.log(res));
+     }, []);
+    
 
 
     return (
@@ -44,10 +58,16 @@ export const Search = () => {
             <div style={{fontSize:"20px"}}>
                 <FontAwesomeIcon icon={faLocationDot} /> 
                 </div>    
-            <Input type="string"  placeholder="Search City" onChange={(e)=> handleChange(e.target.value)} />
+                <Input type="string" placeholder="Search City" onChange={(e) => setSearch(e.target.value)}  />
             <FontAwesomeIcon style={{fontSize:"20px"}} icon={faMagnifyingGlass} />
             </SearchBox>
-
+            <div>
+            {search.forEach((el) =>
+            console.log(el)
+                // <div>{ el}</div>
+                )}
+            </div>
+            
             
         </>
         
