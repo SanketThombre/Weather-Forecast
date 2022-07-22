@@ -25,32 +25,66 @@ border:0px;
 font-size:18px;
 font-weight:bold;
 `
+
+const Displays = styled.div`
+width:54%;
+height:500px;
+border: 0.5px solid gray;
+
+position:absolute;
+left:23%;
+top:73px;
+
+`;
 export const Search = () => {
 
     const [search, setSearch] = useState([]);
-   
-    // let timer;
-    // const debounce = (func) => {
-       
-    //     return {
-    //         if(timer) {
-    //             clearTimeout(timer)
-    //         }
 
-    //         timer = setTimeout( function (){
-    //             func()            
-    //             },500)
-    //     }
+    console.log(search);
+   
+    let timer;
+   function debouncing(getWeather) {
+       
+        
+            if(timer) {
+                clearTimeout(timer)
+            }
+
+            timer = setTimeout( function (){
+                getWeather()            
+                },500)
+        
             
         
-    // }
-    
-    useEffect(() => {
-        axios.get("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCpGeBXtx91HZImsvn6lBvUFdgjmtbhgC4")
-            .then(res => console.log(res));
-     }, []);
-    
+    }
 
+   
+    
+    // useEffect(() => {
+    //     axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`)
+    //         .then(res => console.log(res));
+    //  }, []);
+    
+    async function getWeather() {
+
+        try {
+
+            if (search.length < 2) {
+                return false;
+            }
+            
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`);
+            let data = await res.json();
+            console.log(data);
+            
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+    }
+
+  
 
     return (
         <>
@@ -58,15 +92,12 @@ export const Search = () => {
             <div style={{fontSize:"20px"}}>
                 <FontAwesomeIcon icon={faLocationDot} /> 
                 </div>    
-                <Input type="string" placeholder="Search City" onChange={(e) => setSearch(e.target.value)}  />
+                <Input type="string" placeholder="Search City" onChange={(e) => setSearch(e.target.value)} onInput={debouncing(getWeather)} />
             <FontAwesomeIcon style={{fontSize:"20px"}} icon={faMagnifyingGlass} />
             </SearchBox>
-            <div>
-            {search.forEach((el) =>
-            console.log(el)
-                // <div>{ el}</div>
-                )}
-            </div>
+            <Displays>
+           
+            </Displays>
             
             
         </>
