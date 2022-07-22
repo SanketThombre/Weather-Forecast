@@ -39,17 +39,21 @@ top:73px;
 
 const Main = styled.div`
 width:55%;
-height:150px;
-border: 0.5px solid gray;
+height:190px;
+// border: 0.5px solid gray;
 margin :  auto;
-display:flex;
-
+display:grid;
+grid-template-columns:repeat(8,1fr);
+grid-template-rows:1;
+overflow:auto;
+border-radius : 10px;
 `;
 
 const Box = styled.div`
 width:130px;
 height:100%;
 border: 0.5px solid gray;
+border-radius : 10px;
 `;
 
 const Graph = styled.div`
@@ -73,46 +77,18 @@ export const Search = () => {
     const [search, setSearch] = useState("");
 
     const [data, setData] = useState([]);
+    const [week, setWeek] = useState([]);
+
 
    
 
     console.log(search);
    
-//     let timer;
-//    function debouncing(getWeather) {
-       
-        
-//             if(timer) {
-//                 clearTimeout(timer)
-//             }
-
-//             timer = setTimeout( function (){
-//                 getWeather()            
-//                 },500)
-        
-            
-        
-//     }
-
-    
-    // async function getWeather() {
-
-    //     try {
-
-    //         if (search.length < 2) {
-    //             return false;
-    //         }
-            
-    //         let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`);
-    //         let data = await res.json();
-    //         console.log(data);
-            
-    //     }
-    //     catch (error) {
-    //         console.log(error);
-    //     }
-
-    // }
+    useEffect(() => {
+        axios.get("https://ipinfo.io/json?token=52ed0181817dc8").then((res) => {
+          setSearch(res.data.city);
+        });
+      }, []);
 
     const handlePress = (val) => {
         if (val.keyCode == 13) {
@@ -120,19 +96,40 @@ export const Search = () => {
        }
     }
 
-    let weather = () => {
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${search || "pune"}&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`)
-            .then(res =>
-                (setData(res.data.main.temp))  
-    )
+    let weather = async () => {
+        let url = `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`;
+    try {
+      let res = await fetch(url);
+      let data = await res.json();
+      let lat = data.coord.lat;
+        let lon = data.coord.lon;
+        setData(data.main.temp)
+      weeklydata(lat, lon);
+    } catch (error) {
+      console.log(error);
     }
+    }
+
+    const weeklydata = async (lat, lon) => {
+        let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&appid=10c4cbada812a8d40d0d6e944b86cc8d&units=metric`;
+        try {
+          let res = await fetch(url);
+          let data = await res.json();
+          console.log("week", data.daily);
+          setWeek(data.daily);
+        } catch (error) {
+          console.log(error);
+        }
+      };
    
     
     useEffect(() => {
         weather();
     }, [search]);
     
-    console.log("data",data)
+    // console.log("data", data)
+    
+    
 
     return (
         <>
@@ -148,53 +145,19 @@ export const Search = () => {
          
        
             <Main> 
-                <Box>
+            {week.map((e,i)=>
+                <Box key={i}>
                     <h3 style={{margin: 0}}>sun</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
+                    <h3 style={{ margin: 0 }}>{Math.floor(e.temp.max)}°c</h3>
+                    <img src={`http://openweathermap.org/img/wn//${e.weather[0].icon}@4x.png`} alt="" width="100px" height="100px" />
+                    <h3 style={{margin: 0}}>Clouds</h3>
                 </Box>
-                <Box>
-                <h3 style={{margin: 0}}>mon</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
-                </Box>
-                <Box>
-                <h3 style={{margin: 0}}>tue</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
-                </Box>
-                <Box>
-                <h3 style={{margin: 0}}>wed</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
-                </Box>
-                <Box>
-                <h3 style={{margin: 0}}>thu</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
-                </Box>
-                <Box>
-                <h3 style={{margin: 0}}>fri</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
-                </Box>
-                <Box>
-                <h3 style={{margin: 0}}>sat</h3>
-                    <h3 style={{margin: 0}}>25°c</h3>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
-                    <h3 >Clouds</h3>
-                </Box>   
+                 )}
                
             </Main>
                 
               
-           
+               
               
             <Graph>
            
