@@ -3,7 +3,7 @@ import { faLocationDot,faMagnifyingGlass } from "@fortawesome/free-solid-svg-ico
 import styled from "styled-components";
 import { useState,useEffect } from "react";
 import axios from "axios";
-
+import Chart from "react-apexcharts";
 
 
 const SearchBox = styled.div`
@@ -136,6 +136,20 @@ export const Search = () => {
     // console.log("data", data)
     
     let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  let morn;
+  let day;
+  let eve;
+  let night;
+  const graph = (daily) => { 
+setData(daily.temp.max);
+
+    morn = daily.temp.morn;
+    console.log(morn);
+     day = daily.temp.day;
+     eve = daily.temp.eve;
+     night = daily.temp.night;
+  }
    
     return (
         <>
@@ -153,7 +167,7 @@ export const Search = () => {
             <Main> 
                 {week.map((e, i) =>
                  
-                    <Box key={i}>
+                    <Box key={i} onClick={(el)=>graph(e)}>
                        
                             <h3 style={{ margin: 0 }}>{ days[new Date(e.dt*1000).getDay()]}</h3>
                     <h3 style={{ margin: 0 }}>{Math.floor(e.temp.max)}°c</h3>
@@ -171,9 +185,42 @@ export const Search = () => {
            
                 <div style={{display: 'flex',alignItems: 'center',gap: '15px',margin:"35px 20px"}}>
                     <Temp>{ Math.floor(data)}°c</Temp>
-                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="32px" height="32px" />
+                    <img src="https://weatherapp-swanand.netlify.app/img/cloudy.ac49ed24.svg" alt="" width="50px" height="50px" />
                 </div>
                 
+          
+          <div>
+
+          <Chart
+                type="area"
+                series={[
+                  {
+                    name: "Temperature",
+                    data: [
+                      morn,
+                      day,
+                      eve,
+                      night,
+                    ],
+                  },
+                ]}
+                options={{
+                  dataLabels: {
+                    formatter: (val) => {},
+                  },
+                  yaxis: {
+                    labels: {
+                      formatter: (val) => {
+                        return `${Math.floor(val)}℃`;
+                      },
+                    },
+                  },
+                  xaxis: {
+                    categories: ["6:00am", "12:00pm", "6:00pm", "12:00am"],
+                  },
+                }}
+              />
+          </div>
                     </Graph>
                 
                 
