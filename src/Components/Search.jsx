@@ -45,7 +45,7 @@ margin :  auto;
 display:grid;
 grid-template-columns:repeat(8,1fr);
 grid-template-rows:1;
-overflow:auto;
+overflow:auto hidden;
 border-radius : 10px;
 `;
 
@@ -54,6 +54,11 @@ width:130px;
 height:100%;
 border: 0.5px solid gray;
 border-radius : 10px;
+cursor:pointer;
+&:hover{
+    background-color: gray;
+    color: white;
+}
 `;
 
 const Graph = styled.div`
@@ -62,6 +67,7 @@ height:400px;
 border: 0.5px solid gray;
 margin : 15px auto;
 border-radius : 10px;
+
 `;
 
 const Temp = styled.div`
@@ -129,8 +135,8 @@ export const Search = () => {
     
     // console.log("data", data)
     
-    
-
+    let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+   
     return (
         <>
         <SearchBox>
@@ -145,12 +151,14 @@ export const Search = () => {
          
        
             <Main> 
-            {week.map((e,i)=>
-                <Box key={i}>
-                    <h3 style={{margin: 0}}>sun</h3>
+                {week.map((e, i) =>
+                 
+                    <Box key={i}>
+                       
+                            <h3 style={{ margin: 0 }}>{ days[new Date(e.dt*1000).getDay()]}</h3>
                     <h3 style={{ margin: 0 }}>{Math.floor(e.temp.max)}°c</h3>
-                    <img src={`http://openweathermap.org/img/wn//${e.weather[0].icon}@4x.png`} alt="" width="100px" height="100px" />
-                    <h3 style={{margin: 0}}>Clouds</h3>
+                    <img src={`http://openweathermap.org/img/wn//${e.weather[0].icon}@4x.png`} alt="" width="100px" height="80px" />
+                    <h3 style={{margin: 0}}>{e.weather[0].main}</h3>
                 </Box>
                  )}
                
