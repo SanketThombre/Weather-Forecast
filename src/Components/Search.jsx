@@ -27,13 +27,9 @@ font-weight:bold;
 `
 
 const Displays = styled.div`
-width:54%;
-height:500px;
-border: 0.5px solid gray;
+width:90%;
+height:500px
 
-position:absolute;
-left:23%;
-top:73px;
 
 `;
 
@@ -63,7 +59,7 @@ cursor:pointer;
 
 const Graph = styled.div`
 width:55%;
-height:400px;
+height:600px;
 border: 0.5px solid gray;
 margin : 15px auto;
 border-radius : 10px;
@@ -83,7 +79,9 @@ export const Search = () => {
     const [search, setSearch] = useState("");
 
     const [data, setData] = useState([]);
-    const [week, setWeek] = useState([]);
+  const [week, setWeek] = useState([]);
+  
+  const [temp, setTemp] = useState([]);
 
 
    
@@ -123,6 +121,7 @@ export const Search = () => {
           let data = await res.json();
           console.log("week", data.daily);
           setWeek(data.daily);
+          setTemp(data.daily[0].temp)
         } catch (error) {
           console.log(error);
         }
@@ -137,19 +136,14 @@ export const Search = () => {
     
     let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  let morn;
-  let day;
-  let eve;
-  let night;
+ 
   const graph = (daily) => { 
 setData(daily.temp.max);
-
-    morn = daily.temp.morn;
-    console.log(morn);
-     day = daily.temp.day;
-     eve = daily.temp.eve;
-     night = daily.temp.night;
+console.log("daily", daily)
+    setTemp(daily.temp);
   }
+
+  console.log("temp", temp)
    
     return (
         <>
@@ -189,7 +183,7 @@ setData(daily.temp.max);
                 </div>
                 
           
-          <div>
+          <Displays >
 
           <Chart
                 type="area"
@@ -197,10 +191,11 @@ setData(daily.temp.max);
                   {
                     name: "Temperature",
                     data: [
-                      morn,
-                      day,
-                      eve,
-                      night,
+                      temp.morn,
+                      temp.max,
+                      temp.day,
+                      temp.min,
+                     
                     ],
                   },
                 ]}
@@ -220,7 +215,7 @@ setData(daily.temp.max);
                   },
                 }}
               />
-          </div>
+          </Displays>
                     </Graph>
                 
                 
