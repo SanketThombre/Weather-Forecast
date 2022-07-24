@@ -28,9 +28,7 @@ font-weight:bold;
 
 const Displays = styled.div`
 width:90%;
-height:500px
-
-
+height:500px;
 `;
 
 const Main = styled.div`
@@ -72,7 +70,21 @@ font-weight:bold;
 
 `;
 
+const Name = styled.div`
+width:180px;
+height:35px;
+border: 1px solid gray;
+position:absolute;
+top:20px;
+right:10px;
+font-size:20px;
+font-weight:bold;
+border-radius : 10px;
+display:flex;
+align-items:center;
+justify-content:center;
 
+`;
 
 export const Search = () => {
 
@@ -82,6 +94,8 @@ export const Search = () => {
   const [week, setWeek] = useState([]);
   
   const [temp, setTemp] = useState([]);
+
+  const [name, setName] = useState();
 
 
    
@@ -105,9 +119,11 @@ export const Search = () => {
     try {
       let res = await fetch(url);
       let data = await res.json();
+      console.log("name", data);
+      setName(data.name);
       let lat = data.coord.lat;
         let lon = data.coord.lon;
-        setData(data.main.temp)
+     
       weeklydata(lat, lon);
     } catch (error) {
       console.log(error);
@@ -122,6 +138,7 @@ export const Search = () => {
           console.log("week", data.daily);
           setWeek(data.daily);
           setTemp(data.daily[0].temp)
+          setData(data.daily[0].temp.max);
         } catch (error) {
           console.log(error);
         }
@@ -156,7 +173,7 @@ console.log("daily", daily)
             </SearchBox>
            
            
-         
+        <Name>City:{name}</Name>
        
             <Main> 
                 {week.map((e, i) =>
@@ -216,6 +233,9 @@ console.log("daily", daily)
                 }}
               />
           </Displays>
+
+
+          
                     </Graph>
                 
                 
