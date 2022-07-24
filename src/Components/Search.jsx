@@ -57,7 +57,7 @@ cursor:pointer;
 
 const Graph = styled.div`
 width:55%;
-height:600px;
+height:780px;
 border: 0.5px solid gray;
 margin : 15px auto;
 border-radius : 10px;
@@ -86,6 +86,25 @@ justify-content:center;
 
 `;
 
+const Vatavaran = styled.div`
+width:97%;
+margin : auto;
+height:60px;
+// border: 1px solid gray;
+display:flex;
+align-items:center;
+gap:15px;
+`;
+
+const Press = styled.div`
+flex:1;
+height:100%;
+// border: 1px solid red;
+background-color:#f3fbff;
+
+
+`;
+
 export const Search = () => {
 
     const [search, setSearch] = useState("");
@@ -96,7 +115,8 @@ export const Search = () => {
   const [temp, setTemp] = useState([]);
 
   const [name, setName] = useState();
-
+  const [press, setPress] = useState([]);
+  const [humid, setHumid] = useState([]);
 
    
 
@@ -137,6 +157,8 @@ export const Search = () => {
           let data = await res.json();
           console.log("week", data.daily);
           setWeek(data.daily);
+          setPress(data.daily[0].pressure);
+          setHumid(data.daily[0].humidity);
           setTemp(data.daily[0].temp)
           setData(data.daily[0].temp.max);
         } catch (error) {
@@ -158,6 +180,8 @@ export const Search = () => {
 setData(daily.temp.max);
 console.log("daily", daily)
     setTemp(daily.temp);
+    setPress(daily.pressure);
+    setHumid(daily.humidity);
   }
 
   console.log("temp", temp)
@@ -235,8 +259,20 @@ console.log("daily", daily)
           </Displays>
 
 
+          <Vatavaran>
+            <Press>
+              <h3 style={{ margin: 0 }}>Pressure</h3>
+              <h3 style={{ margin: 0,color:"gray"}}>{press} hpa</h3>
+            </Press>
+            <Press>
+              <h3 style={{ margin: 0 }}>Humidity</h3>
+              <h3 style={{ margin: 0,color:"gray" }}>{humid} %</h3>
+            </Press>
+          </Vatavaran>
+
+         
           
-                    </Graph>
+        </Graph>
                 
                 
         </>
