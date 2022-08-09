@@ -6,8 +6,25 @@ import axios from "axios";
 import Chart from "react-apexcharts";
 
 
+
+const Climate = styled.div`
+width: 55%;
+margin-left:20px;
+// border: 1px solid red;
+`;
+
+const Map = styled.div`
+
+position: absolute;
+top:150px;
+left:59%;
+width: 40%;
+height: 400px;
+border: 1px solid black;
+`;
+
 const SearchBox = styled.div`
-width:55%;
+width:100%;
 height:50px;
 border: 0.5px solid gray;
 margin : 20px auto;
@@ -32,7 +49,7 @@ height:500px;
 `;
 
 const Main = styled.div`
-width:55%;
+width:100%;
 height:190px;
 // border: 0.5px solid gray;
 margin :  auto;
@@ -56,7 +73,7 @@ cursor:pointer;
 `;
 
 const Graph = styled.div`
-width:55%;
+width:100%;
 height:780px;
 border: 0.5px solid gray;
 margin : 15px auto;
@@ -117,6 +134,9 @@ export const Search = () => {
   const [name, setName] = useState();
   const [press, setPress] = useState([]);
   const [humid, setHumid] = useState([]);
+
+  const [map, setMap] = useState([]);
+  
 
    
 
@@ -187,8 +207,12 @@ console.log("daily", daily)
 
   console.log("temp", temp)
    
-    return (
-        <>
+  return (
+      
+    
+<>
+   
+         <Climate>
         <SearchBox>
             <div style={{fontSize:"20px"}}>
                 <FontAwesomeIcon icon={faLocationDot} /> 
@@ -276,7 +300,14 @@ console.log("daily", daily)
         </Graph>
                 
                 
-        </>
+      </Climate> 
+
+      <Map>
+        {<iframe width="100%" height="100%"  id="gmap_canvas" src={`https://maps.google.com/maps?q=${search}=&z=11&ie=UTF8&iwloc=&output=embed`} frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>}
+      </Map>
+    </>
+    
+    
         
     )
 }
