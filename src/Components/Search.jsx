@@ -43,7 +43,7 @@ overflow:auto hidden;
 border-radius : 10px;
 `;
 
-const Box = styled.div`
+let Box = styled.div`
 width:130px;
 height:100%;
 border: 0.5px solid gray;
@@ -182,6 +182,7 @@ console.log("daily", daily)
     setTemp(daily.temp);
     setPress(daily.pressure);
     setHumid(daily.humidity);
+   
   }
 
   console.log("temp", temp)
