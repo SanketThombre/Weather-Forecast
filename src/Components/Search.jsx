@@ -135,8 +135,7 @@ export const Search = () => {
   const [press, setPress] = useState([]);
   const [humid, setHumid] = useState([]);
 
-  const [map, setMap] = useState([]);
-  
+  // const [clr,setClr] = useState("");
 
    
 
@@ -196,12 +195,14 @@ export const Search = () => {
     let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
  
-  const graph = (daily) => { 
+  const graph = (daily,i) => { 
 setData(daily.temp.max);
 console.log("daily", daily)
     setTemp(daily.temp);
     setPress(daily.pressure);
     setHumid(daily.humidity);
+    // setClr("gray");
+    // console.log("key", i);
    
   }
 
@@ -217,7 +218,7 @@ console.log("daily", daily)
             <div style={{fontSize:"20px"}}>
                 <FontAwesomeIcon icon={faLocationDot} /> 
                 </div>    
-                <Input type="string" placeholder="Search City"  onKeyUp={(e)=>handlePress(e)} />
+                <Input type="string" placeholder="Search City and press Enter"  onKeyUp={(e)=>handlePress(e)} />
             <FontAwesomeIcon style={{fontSize:"20px"}} icon={faMagnifyingGlass} />
             </SearchBox>
            
@@ -227,7 +228,7 @@ console.log("daily", daily)
             <Main> 
                 {week.map((e, i) =>
                  
-                    <Box key={i} onClick={(el)=>graph(e)}>
+                    <Box key={i} onClick={(el)=>graph(e, i)}>
                        
                             <h3 style={{ margin: 0 }}>{ days[new Date(e.dt*1000).getDay()]}</h3>
                     <h3 style={{ margin: 0 }}>{Math.floor(e.temp.max)}°c</h3>
